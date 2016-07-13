@@ -1,0 +1,114 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <SoftwareSerial.h>
+
+#include <MeMCore.h>
+
+double angle_rad = PI/180.0;
+double angle_deg = 180.0/PI;
+Servo servo_1_2;
+Servo servo_1_1;
+MePort port_1(1);
+
+int t;
+int press;
+MeLimitSwitch sw_4_1(4,1);
+MeBuzzer buzzer;
+MBotDCMotor motor(0);
+MeLineFollower linefollower_2(2); 
+ //建立一個軟體模擬的序列埠; 不要接反了!
+
+SoftwareSerial myBlueTooth(0,1); 
+char BluetoothData; 
+
+void setup() {
+      Serial.begin(9600);
+      myBlueTooth.begin(9600); 
+      MeBuzzer buzzer;
+      t = 1;
+      servo_1_1.attach(port_1.pin1());
+      servo_1_2.attach(port_1.pin2());
+      pinMode(A7,INPUT);
+      press=0;
+}
+
+ 
+
+void loop() {    
+     t=1;
+   if(sw_4_1.touched()){
+      if(press ==0){
+             buzzer.tone(262, 500);
+             press = 1;
+        }
+     }else{
+          press = 0;
+                }     
+      if (myBlueTooth.available()){
+         BluetoothData=myBlueTooth.read();
+             while(t!=0){
+                if(sw_4_1.touched()){
+                      if(press ==0){
+                         buzzer.tone(262, 500);
+                         press = 1;
+                      }
+                }else{
+                    press = 0;
+                }   
+                 if(BluetoothData=='d'){  
+                          t+=1;      
+                          sad();
+                          } 
+                   else if(BluetoothData=='f'){  
+                          t+=1;      
+                          happy();        
+                   }
+              }
+      }       
+}
+
+void happy(){
+    if(t==1){  
+      motor.move(3,100);
+      servo_1_1.write(90);
+      servo_1_2.write(90);
+    }
+    else if(t==5){
+        motor.move(4,100);
+        servo_1_1.write(180);
+        servo_1_2.write(180);
+    }
+    else if(t==11){
+       motor.move(3,100);
+       servo_1_1.write(90);
+       servo_1_2.write(90);      
+    }else if(t==15){
+       motor.move(4,100);
+        servo_1_1.write(180);
+        servo_1_2.write(180);     
+    }
+    else if(t==20){
+       motor.move(0,100); 
+       t=0; 
+    } 
+   delay(100);     
+}
+
+void sad(){
+    if(t==1){   
+      motor.move(1,150);
+    }
+    else if(t==5){
+        motor.move(2,100);
+    }
+    else if(t==11){
+       motor.move(1,100);   
+    }else if(t==15){
+       motor.move(2,100); 
+    }
+    else if(t==20){
+       motor.move(0,0); 
+       t=0; 
+    }
+     delay(100);  
+}

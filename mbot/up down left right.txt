@@ -1,0 +1,55 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <Servo.h>
+#include <SoftwareSerial.h>
+
+#include <MeMCore.h>
+
+double angle_rad = PI/180.0;
+double angle_deg = 180.0/PI;
+#define MAX_BTCMDLEN 128
+MeBuzzer buzzer;
+MBotDCMotor motor(0);
+// 建立一個軟體模擬的序列埠; 不要接反了!
+
+SoftwareSerial myBlueTooth(0,1); // Arduino RX/TX
+char BluetoothData; 
+
+void setup() {
+
+    Serial.begin(9600);   // Arduino起始鮑率：9600
+
+    myBlueTooth.begin(115200); // HC-06 出廠的鮑率：每個藍牙晶片的鮑率都不太一樣，請務必確認
+
+
+}
+
+ 
+
+void loop() {
+  if (myBlueTooth.available()){
+      BluetoothData=myBlueTooth.read();
+      if(BluetoothData=='f'){
+         motor.move(1,100);
+         buzzer.tone(262, 125);
+         }
+      else if(BluetoothData=='d'){
+         motor.move(2,100);
+         buzzer.tone(262, 125);
+      }
+      else if(BluetoothData=='l'){
+         motor.move(3,100);
+         buzzer.tone(262, 125);
+      }
+      else if(BluetoothData=='r'){
+         motor.move(4,100);
+         buzzer.tone(262, 125);
+      }
+       else if(BluetoothData=='s'){
+         motor.move(0,100);
+         buzzer.tone(262, 125);
+      }
+  }
+  delay(100);
+
+    }
