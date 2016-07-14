@@ -11,6 +11,6 @@ public class OrdermealDialog: IntentHandler
 
     public override void FitIntent(IntentEntity ie)
     {
-        foreach (in 
+        
     }
 }
