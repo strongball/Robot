@@ -8,8 +8,8 @@ public class PhotoCamera : MonoBehaviour {
 	public GameObject canvas;
 	public GameObject UIView;
 
-	int width = 1920;
-	int height = 1080;
+	int width = 1280;
+	int height = 720;
 	GameObject camUI;
 	Material displaySite;
     WebCamTexture back;
