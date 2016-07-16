@@ -58,12 +58,15 @@ public class PhotoCamera : MonoBehaviour {
 
 	public void TakePhoto()
 	{
-		if (!isOpen)
+		if (isOpen)
 		{
-			OpenView();
-		}
-		StartCoroutine(MakePhoto());
-	}
+            StartCoroutine(MakePhoto());
+        }
+        else
+        {
+            OpenView();
+        }	     
+    }
 
 	public IEnumerator MakePhoto()
     {

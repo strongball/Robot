@@ -97,6 +97,8 @@ public class IntentManager
         handlers = new List<IntentHandler>();
         handlers.Add(new OrdermealDialog());
         handlers.Add(new DailyDialog());
+        handlers.Add(new GameDialog());
+        handlers.Add(new PhotoDialog());
     }
     public void HandleIntent(IntentEntity ie)
     {
