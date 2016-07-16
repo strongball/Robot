@@ -34,11 +34,12 @@ public class ReadResponse : MonoBehaviour {
             if (e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
             {
                 JsonData arr = jsonData[ie.intent][e.type];
+                int randEmo = Emotion.GetRandomScore();
                 int best = 0;
                 int mind = 1000;
                 for(int i = 0; i < arr.Count; i++)
                 {
-                    int d = Mathf.Abs(int.Parse(arr[i]["emotion"].ToString()) - Emotion.Score);
+                    int d = Mathf.Abs(int.Parse(arr[i]["emotion"].ToString()) - randEmo);
                     if(d < mind)
                     {
                         mind = d;
