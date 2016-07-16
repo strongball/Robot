@@ -11,6 +11,12 @@ public class OrdermealDialog: IntentHandler
 
     public override void FitIntent(IntentEntity ie)
     {
-        
+        foreach (Entity e in ie.entitys)
+        {
+            if (e.type == Entity.Intention_Order)
+            {
+                //call   
+            }
+        }
     }
 }

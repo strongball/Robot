@@ -100,7 +100,9 @@ public class IntentManager
     }
     public void HandleIntent(IntentEntity ie)
     {
-        foreach(IntentHandler ih in handlers)
+        Emotion.DetectEmotion(ie);
+        ReadResponse.Response(ie);
+        foreach (IntentHandler ih in handlers)
         {
             ih.CheckAndHandle(ie);
         }

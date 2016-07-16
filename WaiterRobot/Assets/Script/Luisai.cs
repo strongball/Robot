@@ -18,7 +18,7 @@ public class Luisai : MonoBehaviour
         intentManager = new IntentManager();
 
 		Speech.addListener(callLuis);
-        //this.callLuis("一份牛排");
+        this.callLuis("你多重");
 
     }
 
@@ -48,18 +48,6 @@ public class Luisai : MonoBehaviour
         }
         
         intentManager.HandleIntent(new IntentEntity(s, es));
-
-        //Toast.makeText(s, false);
-
-		/*if (s.Length > 1)
-		{
-			TextToSpeech.Say(s);
-		}
-		else
-		{
-			TextToSpeech.Say("低能兒");
-		}*/
-		
 	}
     
 }

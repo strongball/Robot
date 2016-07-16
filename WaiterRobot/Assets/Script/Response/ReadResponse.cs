@@ -5,12 +5,12 @@ using LitJson;
 
 public class ReadResponse : MonoBehaviour {
     private string filePath;
-    private string jsonString;
-    private JsonData jsonData;
+    private static string jsonString;
+    private static JsonData jsonData;
     
-    void Start()
+    void Awake()
     {
-        filePath = Application.streamingAssetsPath + "/sample.json";
+        filePath = Application.streamingAssetsPath + "/AI_Content_Unicode.json";
         StartCoroutine(ReadJson());
     }
     IEnumerator ReadJson()
@@ -24,9 +24,30 @@ public class ReadResponse : MonoBehaviour {
         else
             jsonString = System.IO.File.ReadAllText(filePath);
         jsonData = JsonMapper.ToObject(jsonString);
-        Debug.Log(jsonData["name"]);//(3)
-        Debug.Log(jsonData["age"]);
-        // Toast.makeText(jsonData["name"].ToString(), false);
-        Toast.makeText(jsonData["name"].ToString(), false);
+        Debug.Log("Done");//(3)
+    }
+    public static void Response(IntentEntity ie)
+    {
+        foreach(Entity e in ie.entitys)
+        {
+            Debug.Log(e.type);
+            if (e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
+            {
+                JsonData arr = jsonData[ie.intent][e.type];
+                int best = 0;
+                int mind = 1000;
+                for(int i = 0; i < arr.Count; i++)
+                {
+                    int d = Mathf.Abs(int.Parse(arr[i]["emotion"].ToString()) - Emotion.Score);
+                    if(d < mind)
+                    {
+                        mind = d;
+                        best = i;
+                    }
+                }
+                Debug.Log(arr[best]["content"]);
+                TextToSpeech.Say(arr[best]["content"].ToString());
+            }
+        }
     }
 }
