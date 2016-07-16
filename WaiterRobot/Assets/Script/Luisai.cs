@@ -18,7 +18,7 @@ public class Luisai : MonoBehaviour
         intentManager = new IntentManager();
 
 		Speech.addListener(callLuis);
-        this.callLuis("你多重");
+        //this.callLuis("你多重");
 
     }
 
