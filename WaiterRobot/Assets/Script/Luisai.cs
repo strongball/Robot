@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,11 +13,8 @@ public class Luisai : MonoBehaviour
 	Speech speech;
 	TextToSpeech textToSpeech;
 
-    IntentManager intentManager;
     void Start()
 	{
-        intentManager = new IntentManager();
-
 		Speech.addListener(callLuis);
         //this.callLuis("我想拍照");
     }
@@ -32,6 +30,7 @@ public class Luisai : MonoBehaviour
     {
 		string url = "https://api.projectoxford.ai/luis/v1/application?id=020e4d3e-8694-45b0-b07d-11f2a3cc6a6f&subscription-key=c02b958474214f15bbe7ffd005ef041d&q="
         + System.Uri.EscapeDataString(input);
+        Debug.Log(input);
         WWW www = new WWW(url);
         StartCoroutine(WaitForRequest(www));
     }
@@ -46,7 +45,11 @@ public class Luisai : MonoBehaviour
             es.Add(new Entity(e["type"].ToString(), e["entity"].ToString()));
         }
         
-        intentManager.HandleIntent(new IntentEntity(s, es));
+        IntentManager.HandleIntent(new IntentEntity(s, es));
 	}
     
+    public void EditorSpeech(Text t)
+    {
+        callLuis(t.text);
+    }
 }

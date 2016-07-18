@@ -24,23 +24,22 @@ public class ReadResponse : MonoBehaviour {
         else
             jsonString = System.IO.File.ReadAllText(filePath);
         jsonData = JsonMapper.ToObject(jsonString);
-        Debug.Log("Done");//(3)
     }
     public static void Response(IntentEntity ie)
     {
         foreach(Entity e in ie.entitys)
         {
             Debug.Log(e.type);
-            if (e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
+            if (jsonData.Keys.Contains(ie.intent) && jsonData[ie.intent].Keys.Contains(e.type) && e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
             {
                 JsonData arr = jsonData[ie.intent][e.type];
-                int randEmo = Emotion.GetRandomScore();
+                float randEmo = Emotion.GetRandomScore();
                 int best = 0;
-                int mind = 1000;
-                for(int i = 0; i < arr.Count; i++)
+                float mind = 1000;
+                for (int i = 0; i < arr.Count; i++)
                 {
-                    int d = Mathf.Abs(int.Parse(arr[i]["emotion"].ToString()) - randEmo);
-                    if(d < mind)
+                    float d = int.Parse(arr[i]["emotion"].ToString()) - randEmo;
+                    if (d < mind)
                     {
                         mind = d;
                         best = i;

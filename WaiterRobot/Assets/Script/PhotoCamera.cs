@@ -4,23 +4,19 @@ using System.Collections;
 using System.IO;
 using System;
 
-public class PhotoCamera : MonoBehaviour {
-	public GameObject canvas;
-	public GameObject UIView;
-
+public class PhotoCamera : MonoBehaviour
+{
+    public GameObject Display;
 	int width = 1280;
 	int height = 720;
-	GameObject camUI;
+
 	Material displaySite;
     WebCamTexture back;
 	bool isOpen;
 	// Use this for initialization
-	void Start()
+	void Awake()
 	{
-		camUI = Instantiate(UIView);
-		camUI.transform.SetParent(canvas.transform, false);
-		camUI.transform.SetAsFirstSibling();
-		displaySite = camUI.transform.FindChild("Display").GetComponent<Image>().material;
+		displaySite = Display.GetComponent<Image>().material;
 		WebCamDevice[] devices = WebCamTexture.devices;
 
 		foreach (WebCamDevice cam in devices) { 
@@ -28,43 +24,40 @@ public class PhotoCamera : MonoBehaviour {
 			{
 				{
 					back = new WebCamTexture(cam.name, width, height);
-
 				}
 			}
 		}
 		isOpen = false;
 
-		camUI.transform.FindChild("Button").GetComponent<Button>().onClick.AddListener(() => {
+		transform.FindChild("Button").GetComponent<Button>().onClick.AddListener(() => {
 			TakePhoto();
 		});
+
+        IntentManager.addDialogListener(Dialog);
 	}
 
-	public void OpenView()
-	{
-		isOpen = !isOpen;
-		if (isOpen)
-		{
-			displaySite.mainTexture = back;
-			back.Play();
-		}
-		else
-		{
-			displaySite.mainTexture = null;
-			back.Stop();
-		}
-		camUI.SetActive(isOpen);
-	}
+    public void onStart()
+    {
+        displaySite.mainTexture = null;
+        displaySite.mainTexture = back;
+        back.Play();
+    }
 
+    public void onClose()
+    {
+        displaySite.mainTexture = null;
+        back.Stop();
+    }
 
 	public void TakePhoto()
 	{
-		if (isOpen)
+		if (gameObject.activeInHierarchy)
 		{
             StartCoroutine(MakePhoto());
         }
         else
         {
-            OpenView();
+            GetComponent<UIAdapter>().Open(true);
         }	     
     }
 
@@ -100,13 +93,7 @@ public class PhotoCamera : MonoBehaviour {
 	}
     // Update is called once per frame
     void Update () {
-		if (isOpen)
-		{
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				OpenView();
-			}
-		}
+
 	}
     public int calculateSeconds()
     {
@@ -115,5 +102,19 @@ public class PhotoCamera : MonoBehaviour {
         TimeSpan result = dtNow.Subtract(dt);
         int seconds = Convert.ToInt32(result.TotalSeconds);
         return seconds;
+    }
+
+    public void Dialog(IntentEntity ie)
+    {
+        if(ie.intent == Intent.Photo)
+        {
+            foreach(Entity e in ie.entitys)
+            {
+                if(e.type == Entity.Intention_Photo)
+                {
+                    TakePhoto();
+                }
+            }
+        }
     }
 }

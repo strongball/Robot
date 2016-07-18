@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class Emotion{
-    public static int Score = 50;
-    public static int Change = 10;
-
+    public static float Score = 50;
+    public static float Change = 10;
+    const float MAX = 100;
+    const float MIN = 100;
     public static void DetectEmotion(IntentEntity ie)
     {
         foreach (Entity e in ie.entitys)
@@ -12,16 +13,24 @@ public class Emotion{
             if(e.type == Entity.Emotion_Happy)
             {
                 Score += Change;
+                if(Score > MAX)
+                {
+                    Score = MAX;
+                }
             }
             if(e.type == Entity.Emotion_Angry)
             {
                 Score -= Change;
+                if(Score < MIN)
+                {
+                    Score = MIN;
+                }
             }
         }
     }
-    public static int GetRandomScore()
+    public static float GetRandomScore()
     {
         float r = Random.Range(-1.5f, 1.5f);
-        return Mathf.RoundToInt(Score + r * Change);
+        return Score + r * Change;
     }
 }
