@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class Speech : MonoBehaviour {
+public class Speech : MonoBehaviour
+{
 	AndroidJavaObject toText;
 	public GameObject status;
 
 	static Action<string> listeners;
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		//listeners = new List<Action<string>>();
 #if (UNITY_ANDROID && !UNITY_EDITOR)
 		AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -24,16 +26,17 @@ public class Speech : MonoBehaviour {
 		Toast.makeText(s, false);
 		broadcast(s);
 	}
-	void statusListener (string s)
+	void statusListener(string s)
 	{
 		status.GetComponent<Text>().text = s;
-		if(s == "Result")
+		if (s == "Result")
 		{
 			StartListen();
 		}
 	}
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 
 	}
 	public void StartListen()
@@ -49,6 +52,6 @@ public class Speech : MonoBehaviour {
 
 	public void broadcast(string s)
 	{
-		listeners (s);
+		listeners(s);
 	}
 }

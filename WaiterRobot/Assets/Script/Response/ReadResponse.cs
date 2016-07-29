@@ -29,7 +29,6 @@ public class ReadResponse : MonoBehaviour {
     {
         foreach(Entity e in ie.entitys)
         {
-            Debug.Log(e.type);
             if (jsonData.Keys.Contains(ie.intent) && jsonData[ie.intent].Keys.Contains(e.type) && e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
             {
                 JsonData arr = jsonData[ie.intent][e.type];
@@ -38,7 +37,7 @@ public class ReadResponse : MonoBehaviour {
                 float mind = 1000;
                 for (int i = 0; i < arr.Count; i++)
                 {
-                    float d = int.Parse(arr[i]["emotion"].ToString()) - randEmo;
+                    float d = Mathf.Abs(int.Parse(arr[i]["emotion"].ToString()) - randEmo);
                     if (d < mind)
                     {
                         mind = d;

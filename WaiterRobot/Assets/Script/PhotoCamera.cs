@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System;
 
 public class PhotoCamera : MonoBehaviour
 {
     public GameObject Display;
+
 	int width = 1280;
 	int height = 720;
 
 	Material displaySite;
     WebCamTexture back;
-	bool isOpen;
 	// Use this for initialization
 	void Awake()
 	{
@@ -27,7 +28,6 @@ public class PhotoCamera : MonoBehaviour
 				}
 			}
 		}
-		isOpen = false;
 
 		transform.FindChild("Button").GetComponent<Button>().onClick.AddListener(() => {
 			TakePhoto();
@@ -38,7 +38,6 @@ public class PhotoCamera : MonoBehaviour
 
     public void onStart()
     {
-        displaySite.mainTexture = null;
         displaySite.mainTexture = back;
         back.Play();
     }
@@ -89,10 +88,22 @@ public class PhotoCamera : MonoBehaviour
 		}
         File.WriteAllBytes(path + filename, bytes);
 		Toast.makeText(filename, false);
-		Debug.Log(filename);
+		Debug.Log(path + filename);
+		StartCoroutine(upload(filename, bytes));
 	}
-    // Update is called once per frame
-    void Update () {
+	IEnumerator upload(string name, byte[] bytes)
+	{
+		yield return new WaitForEndOfFrame();
+
+		WWWForm postForm = new WWWForm();
+		postForm.AddBinaryData("file", bytes, name, "image/png");
+
+		WWW upload = new WWW(MyWebSocket.IP + "/upload", postForm);
+		yield return upload;
+		Debug.Log(upload.text);
+	}
+	// Update is called once per frame
+	void Update () {
 
 	}
     public int calculateSeconds()

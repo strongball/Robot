@@ -51,6 +51,18 @@ public class Intent
     public static string Service   = "服務對話";
     public static string Choice    = "確認回應";
 }
+public enum IntentUnit
+{
+	點餐對話,
+	垃圾話,
+	詢問對話,
+	日常對話,
+	拍照對話,
+	問候對話,
+	遊戲對話,
+	服務對話,
+	確認回應
+}
 public class Entity
 {
     public static string Hello = "問候";
@@ -131,14 +143,8 @@ public class Entity
 public class IntentManager
 {
     static Action<IntentEntity> dialogListener;
-
-    public IntentManager()
-    {
-
-    }
     public static void HandleIntent(IntentEntity ie)
     {
-        float number;
         Emotion.DetectEmotion(ie);
         ReadResponse.Response(ie);
         dialogListener(ie);

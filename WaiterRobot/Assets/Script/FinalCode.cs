@@ -61,6 +61,7 @@ public class FinalCode : MonoBehaviour
             if (number == bomb)
             {
                 EndGame();
+				return;
             }
             else if (number > bomb)
             {
@@ -70,17 +71,18 @@ public class FinalCode : MonoBehaviour
             {
                 min = number;
             }
-            answer.text = "";
+			TextToSpeech.Say(min + "到" + max);
+			answer.text = "";
         }
         else
         {
-            TextToSpeech.Say("你亂來");
+            TextToSpeech.Say("你當我不會判斷嗎");
         }
     }
     public void EndGame()
     {
         TextToSpeech.Say("爆炸，掰掰");
-        initGame();
+		gameObject.GetComponent<UIAdapter>().Open(false);
     }
 
     public void Dialog(IntentEntity ie)

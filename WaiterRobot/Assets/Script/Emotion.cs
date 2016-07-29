@@ -5,7 +5,7 @@ public class Emotion{
     public static float Score = 50;
     public static float Change = 10;
     const float MAX = 100;
-    const float MIN = 100;
+    const float MIN = 0;
     public static void DetectEmotion(IntentEntity ie)
     {
         foreach (Entity e in ie.entitys)
@@ -27,10 +27,12 @@ public class Emotion{
                 }
             }
         }
-    }
+		Debug.Log("Score: " + Score);
+	}
     public static float GetRandomScore()
     {
         float r = Random.Range(-1.5f, 1.5f);
+		Debug.Log(Score + r * Change);
         return Score + r * Change;
     }
 }
