@@ -39,7 +39,16 @@ public class Bluetooth : MonoBehaviour
 		bluetooth.Call("connectBluetooth", address);
 		#endif
 	}
-	
+	public static void OpenBluetooth()
+	{
+
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+		if(bluetooth != null){
+			bluetooth.Call("openBluetooth");
+		}
+#endif
+	}
+
 	public static void SendToDevice(string message){
 #if (UNITY_ANDROID && !UNITY_EDITOR)
 		if(bluetooth != null){
@@ -54,6 +63,15 @@ public class Bluetooth : MonoBehaviour
 	void receiver(string s)
 	{
 		Toast.makeText(s, false);
+	}
+	void OnConnect(string s)
+	{
+		Toast.makeText("connect: "+s, false);
+	}
+	void NotOpen(string s)
+	{
+		Toast.makeText("Bluetooth not open", false);
+		OpenBluetooth();
 	}
 
 	public static void addDeviceListener(Action<List<BluetoothDevice>> listener)
