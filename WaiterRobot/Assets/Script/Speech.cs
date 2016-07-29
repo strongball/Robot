@@ -21,7 +21,7 @@ public class Speech : MonoBehaviour
 #endif
 
 	}
-	void messgae(string s)
+	void speechMessage(string s)
 	{
 		Toast.makeText(s, false);
 		broadcast(s);

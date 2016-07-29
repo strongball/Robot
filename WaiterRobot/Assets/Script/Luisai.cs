@@ -50,8 +50,6 @@ public class Luisai : MonoBehaviour
     
     public void EditorSpeech(Text t)
     {
-		//callLuis(t.text);
-		Debug.Log(t.text);
-		Bluetooth.SendToDevice(t.text);
+		callLuis(t.text);
     }
 }
