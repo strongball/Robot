@@ -7,13 +7,26 @@ public class ReadResponse : MonoBehaviour {
     private string filePath;
     private static string jsonString;
     private static JsonData jsonData;
-    
-    void Awake()
+	private static int wantToDo;
+
+	private Action actionList;
+	void Awake()
     {
-        filePath = Application.streamingAssetsPath + "/AI_Content_Unicode.json";
+		wantToDo = -1;
+		actionList = GetComponent<Action>();
+		filePath = Application.streamingAssetsPath + "/AI_Content_Unicode.json";
         StartCoroutine(ReadJson());
     }
-    IEnumerator ReadJson()
+	void Update()
+	{
+		if(wantToDo > -1)
+		{
+			actionList.StartAction(wantToDo);
+			wantToDo = -1;
+		}
+	}
+
+	IEnumerator ReadJson()
     {
         if (filePath.Contains("://"))
         {
@@ -46,6 +59,9 @@ public class ReadResponse : MonoBehaviour {
                 }
                 Debug.Log(arr[best]["content"]);
                 TextToSpeech.Say(arr[best]["content"].ToString());
+				if (arr[best].Keys.Contains("action")){
+					wantToDo = int.Parse(arr[best]["action"].ToString());
+				}
             }
         }
     }

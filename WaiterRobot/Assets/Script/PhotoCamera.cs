@@ -89,7 +89,7 @@ public class PhotoCamera : MonoBehaviour
         File.WriteAllBytes(path + filename, bytes);
 		Toast.makeText(filename, false);
 		Debug.Log(path + filename);
-		StartCoroutine(upload(filename, bytes));
+		//StartCoroutine(upload(filename, bytes));
 	}
 	IEnumerator upload(string name, byte[] bytes)
 	{
