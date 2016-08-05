@@ -3,8 +3,6 @@ using UnityEngine.Events;
 using System.Collections;
 
 public class UIAdapter : MonoBehaviour {
-    public UnityEvent onOpen;
-    public UnityEvent onClose;
 	// Use this for initialization
 	void Start () {
 	}
@@ -21,7 +19,6 @@ public class UIAdapter : MonoBehaviour {
             if (!gameObject.activeInHierarchy)
             {
                 gameObject.SetActive(true);
-                onOpen.Invoke();
             }
             gameObject.transform.SetAsLastSibling();
         }
@@ -29,7 +26,6 @@ public class UIAdapter : MonoBehaviour {
         {
             gameObject.SetActive(false);
             gameObject.transform.SetAsFirstSibling();
-            onClose.Invoke();
         }
     }
 

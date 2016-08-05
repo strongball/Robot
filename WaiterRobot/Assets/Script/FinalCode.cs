@@ -30,13 +30,13 @@ public class FinalCode : MonoBehaviour
         maxText.text = max.ToString();
     }
 
-    public void onStart()
+    void OnEnable()
     {
         IntentManager.addDialogListener(Dialog);
         initGame();
     }
 
-    public void onClose()
+    void OnDisable()
     {
         IntentManager.removeDialogListener(Dialog);
     }

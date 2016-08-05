@@ -31,6 +31,9 @@ public class MyWebSocket : MonoBehaviour {
 	}
 	public void Start()
 	{
+		On("upload", (jd) => {
+			Debug.Log(jd.ToString());
+		});
 		if (autoConnect)
 		{
 			Connect();
@@ -44,8 +47,15 @@ public class MyWebSocket : MonoBehaviour {
 	public void OnDestroy()
 	{
 		if (socketThread != null) { socketThread.Abort(); }
+		connected = false;
 		ws.Close();
 	}
+	public void OnApplicationQuit()
+	{
+		ws.Close();
+	}
+
+
 	private void OnOpen(object sender, EventArgs e)
 	{
 		Debug.Log("OPEN");
@@ -58,9 +68,14 @@ public class MyWebSocket : MonoBehaviour {
 	public void Connect()
 	{
 		IP = url;
+		if(socketThread != null)
+		{
+			socketThread.Abort();
+		}
 		socketThread = new Thread(RunSocketThread);
 		socketThread.Start(ws);
 	}
+
 	private void RunSocketThread(object obj)
 	{
 		WebSocket webSocket = (WebSocket)obj;

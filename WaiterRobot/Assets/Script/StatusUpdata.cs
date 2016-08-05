@@ -10,6 +10,7 @@ public class StatusUpdata : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		counter = 0;
+		Debug.Log("start");
 	}
 	
 	// Update is called once per frame
@@ -24,5 +25,13 @@ public class StatusUpdata : MonoBehaviour {
 			counter = 0;
 		}
 		counter += Time.deltaTime;
+	}
+	void OnDisable()
+	{
+		Debug.Log("DAADDA");
+	}
+	void OnEnable()
+	{
+		Debug.Log("EEEEE");
 	}
 }

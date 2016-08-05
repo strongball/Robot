@@ -8,7 +8,7 @@ using System;
 public class PhotoCamera : MonoBehaviour
 {
     public GameObject Display;
-
+	public bool AutoUpload;
 	int width = 1280;
 	int height = 720;
 
@@ -36,13 +36,13 @@ public class PhotoCamera : MonoBehaviour
         IntentManager.addDialogListener(Dialog);
 	}
 
-    public void onStart()
+    void OnEnable()
     {
         displaySite.mainTexture = back;
         back.Play();
     }
 
-    public void onClose()
+    void OnDisable()
     {
         displaySite.mainTexture = null;
         back.Stop();
@@ -78,7 +78,7 @@ public class PhotoCamera : MonoBehaviour
 		Texture2D photo = new Texture2D(back.width, back.height);
         photo.SetPixels(back.GetPixels());
         photo.Apply();
-
+		
         //Encode to a PNG
         byte[] bytes = photo.EncodeToPNG();
 		//Write out the PNG. Of course you have to substitute your_path for something sensible
@@ -89,12 +89,17 @@ public class PhotoCamera : MonoBehaviour
         File.WriteAllBytes(path + filename, bytes);
 		Toast.makeText(filename, false);
 		Debug.Log(path + filename);
-		//StartCoroutine(upload(filename, bytes));
+		
+		if (AutoUpload)
+		{
+			MyWebSocket.SendBytes(bytes);
+			//StartCoroutine(upload(filename, bytes));
+		}	
 	}
 	IEnumerator upload(string name, byte[] bytes)
 	{
 		yield return new WaitForEndOfFrame();
-
+		
 		WWWForm postForm = new WWWForm();
 		postForm.AddBinaryData("file", bytes, name, "image/png");
 
