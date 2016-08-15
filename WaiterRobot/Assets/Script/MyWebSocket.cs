@@ -31,9 +31,6 @@ public class MyWebSocket : MonoBehaviour {
 	}
 	public void Start()
 	{
-		On("upload", (jd) => {
-			Debug.Log(jd.ToString());
-		});
 		if (autoConnect)
 		{
 			Connect();
