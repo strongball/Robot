@@ -108,6 +108,7 @@ public class MyWebSocket : MonoBehaviour {
 
 	public void OnMessage(object sender, MessageEventArgs e)
 	{
+		Debug.Log("rec");
 		JsonData data = JsonMapper.ToObject(e.Data);
 		foreach (SocketListener sl in eventListeners)
 		{

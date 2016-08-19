@@ -11,8 +11,10 @@ using ZXing.QrCode;
 public class PhotoCamera : MonoBehaviour
 {
     public GameObject Display;
+	public GameObject Black;
 	public GameObject PreView;
 	public GameObject PreViewPhoto;
+	public GameObject QRCodePanel;
 	public GameObject QRCode;
 	public bool AutoUpload;
 	int width = 1280;
@@ -62,6 +64,7 @@ public class PhotoCamera : MonoBehaviour
 			showQR = false;
 			MakeQRCode(photoUrl);
 		}
+
 	}
 
 	void OnEnable()
@@ -74,7 +77,6 @@ public class PhotoCamera : MonoBehaviour
     {
         displaySite.mainTexture = null;
         back.Stop();
-		QRCode.SetActive(false);
 	}
 
 	public void TakePhoto()
@@ -92,11 +94,17 @@ public class PhotoCamera : MonoBehaviour
 	public IEnumerator MakePhoto()
     {
 		yield return new WaitForEndOfFrame();
-
+		StartCoroutine(ShowBlack());
 		photo = new Texture2D(back.width, back.height);
         photo.SetPixels(back.GetPixels());
         photo.Apply();
 		SetPreview();
+	}
+	IEnumerator ShowBlack()
+	{
+		Black.SetActive(true);
+		yield return new WaitForSeconds(0.2f);
+		Black.SetActive(false);
 	}
 
 	public void SetPreview()
@@ -139,7 +147,7 @@ public class PhotoCamera : MonoBehaviour
 		encoded.SetPixels32(color32);//設定要顯示的圖片像素
 		encoded.Apply();//申請顯示圖片
 		QRCode.GetComponent<Image>().material.mainTexture = encoded;
-		QRCode.SetActive(true);
+		QRCodePanel.SetActive(true);
 	}
 
 	private Color32[] useEncode(string textForEncoding, int width, int height)
