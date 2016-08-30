@@ -23,5 +23,6 @@ public class TextToSpeech : MonoBehaviour {
 			toSpeech.Call ("say", s);
 		}
 #endif
+		Debug.Log("Say: " + s);
 	}
 }

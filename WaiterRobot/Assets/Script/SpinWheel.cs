@@ -1,11 +1,23 @@
 ﻿using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.Events;
+
+
+[System.Serializable]
+public class IntEvent : UnityEvent<string>
+{
+}
 public class SpinWheel : MonoBehaviour
 {
-    public List<int> prize;
+	public List<string> prize;
     public List<AnimationCurve> animationCurves;
+	public IntEvent OnSpinEnd;
+	[Range(0, 100)]
+	public int Force;
+
     private bool spinning;
     private float anglePerItem;
     private int randomTime;
@@ -13,25 +25,33 @@ public class SpinWheel : MonoBehaviour
 
     void Start()
     {
-        /*spinning = false;
-        anglePerItem = 360 / prize.Count;*/
+        spinning = false;
+        /*anglePerItem = 360 / prize.Count;*/
     }
 
     public void Update()
     {
-        /*if (!spinning)
-        {
-
-            randomTime = Random.Range(1, 4);
-            itemNumber = Random.Range(0, prize.Count);
-            float maxAngle = 360 * randomTime + (itemNumber * anglePerItem);
-
-            StartCoroutine(SpinTheWheel(5 * randomTime, maxAngle));
-        }*/
-    }
-    public void StartGame()
+		if(Input.touchCount > 0)
+		{
+			if(!spinning && Input.GetTouch(0).deltaPosition.y > Force)
+			{
+				StartGame(true);
+			}
+			else if(!spinning && Input.GetTouch(0).deltaPosition.y < - Force)
+			{
+				StartGame(false);
+			}
+		}
+#if UNITY_EDITOR
+		if(Input.GetKey(KeyCode.Q) && !spinning)
+		{
+			StartGame(true);
+		}
+#endif
+	}
+	public void StartGame(bool clock)
     {
-        spinning = false;
+        spinning = true;
         anglePerItem = 360 / prize.Count;
 
         
@@ -39,21 +59,23 @@ public class SpinWheel : MonoBehaviour
         itemNumber = Random.Range(0, prize.Count);
         float maxAngle = 360 * randomTime + (itemNumber * anglePerItem);
 
-        StartCoroutine(SpinTheWheel(randomTime, maxAngle));
+        StartCoroutine(SpinTheWheel(randomTime, maxAngle, clock));
       
     }
 
-    IEnumerator SpinTheWheel(float time, float maxAngle)
+    IEnumerator SpinTheWheel(float time, float maxAngle, bool clock)
     {
-        spinning = true;
-
         float timer = 0.0f;
         float startAngle = transform.eulerAngles.z;
+
         maxAngle = maxAngle - startAngle;
 
-        int animationCurveNumber = Random.Range(0, animationCurves.Count);
-        Debug.Log("Animation Curve No. : " + animationCurveNumber);
-        Debug.Log("Time : " + time);
+		if (!clock)
+		{
+			maxAngle  = - maxAngle + 2 * (maxAngle % 360);
+		}
+
+		int animationCurveNumber = Random.Range(0, animationCurves.Count);
 
         while (timer < time)
         {
@@ -65,12 +87,11 @@ public class SpinWheel : MonoBehaviour
         }
 
         transform.eulerAngles = new Vector3(0.0f, 0.0f, maxAngle + startAngle);
-        spinning = false;
-
-        
+        spinning = false;  
 
         //prize[itemNumber] = GetComponent<Text>;
         Debug.Log("Prize: " + prize[itemNumber]);//use prize[itemNumnber] as per requirement
-    }
+		OnSpinEnd.Invoke(prize[itemNumber]);
+	}
 }
 

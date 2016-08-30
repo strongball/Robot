@@ -16,14 +16,17 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (delayCounter > closeDelay && Input.GetKeyDown(KeyCode.Escape) && transform.childCount > 0)
+        if (delayCounter > closeDelay)
         {
-			delayCounter = 0;
-            Transform t = transform.GetChild(transform.childCount - 1);
-            if (t.gameObject.activeInHierarchy)
-            {
-                t.GetComponent<UIAdapter>().Open(false);
-            }
+			if (Input.GetKeyDown(KeyCode.Escape) && transform.childCount > 0)
+			{
+				delayCounter = 0;
+				Transform t = transform.GetChild(transform.childCount - 1);
+				if (t.gameObject.activeInHierarchy)
+				{
+					t.GetComponent<UIAdapter>().Open(false);
+				}
+			}
         }
         else
         {
