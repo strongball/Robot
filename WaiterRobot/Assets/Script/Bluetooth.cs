@@ -69,7 +69,7 @@ public class Bluetooth : MonoBehaviour
 	}
 	void receiver(string s)
 	{
-		Toast.makeText(s, false);
+		//Toast.makeText(s, false);
 		messageListener(s);
 	}
 	void OnConnect(string s)

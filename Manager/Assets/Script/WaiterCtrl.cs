@@ -3,8 +3,10 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class WaiterCtrl : MonoBehaviour {
-	public GameObject Emotion;
 	public GameObject Table;
+	public GameObject Power;
+	public GameObject Emotion;
+	
 
 	public void SetTable(string s)
 	{
@@ -14,5 +16,10 @@ public class WaiterCtrl : MonoBehaviour {
 	public void SetEmotion(int s)
 	{
 		Emotion.GetComponent<Text>().text = s.ToString();
+	}
+
+	public void SetPower(string s)
+	{
+		Power.GetComponent<Text>().text = s;
 	}
 }

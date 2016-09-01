@@ -80,8 +80,10 @@ public class ReceiveWaiters : MonoBehaviour {
 				edit.SetParent(Display.transform, false);
 				edit.gameObject.name = WaiterAddName + wa.id;
 			}
-			edit.GetComponent<WaiterCtrl>().SetEmotion(wa.mood);
 			edit.GetComponent<WaiterCtrl>().SetTable(wa.table);
+			edit.GetComponent<WaiterCtrl>().SetPower(wa.power + "%");
+			edit.GetComponent<WaiterCtrl>().SetEmotion(wa.mood);
+			
 
 			//setorder
 			Transform order = OrderDisplay.transform.FindChild(OrderAddName + wa.id);
@@ -122,7 +124,24 @@ public class WaiterAction
 {
 	public bool keep;
 	public string id;
-	public string table;
+	private string _table;
+	public string table {
+		set
+		{
+			_table = value;
+		}
+		get
+		{
+			if(_table == "unset")
+			{
+				return "0";
+			}
+			else
+			{
+				return _table;
+			}
+		}
+	}
 	public int mood;
 	public int power;
 	public List<Meal> meals;

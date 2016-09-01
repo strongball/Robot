@@ -26,6 +26,7 @@ public class TableOrder : MonoBehaviour {
 			GameObject go = TableList.transform.GetChild(i).gameObject;
 			Destroy(go);
 		}
+
 		TableNumber.GetComponent<Text>().text = "第" + wact.table + "桌";
 
 		foreach (Meal meall in wact.meals)

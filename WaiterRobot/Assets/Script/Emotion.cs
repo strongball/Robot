@@ -53,9 +53,6 @@ public class Emotion {
 
 	public static void SendEmotion()
 	{
-		JSONObject data = new JSONObject();
-		data.AddField("mood", Score);
-		data.AddField("power", 87);
-		MyWebSocket.Emit("status", data);
+		MyWebSocket.Emit("Emotion", new JSONObject(Score));
 	}
 }
