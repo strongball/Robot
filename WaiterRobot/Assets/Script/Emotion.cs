@@ -1,12 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Emotion{
-    public static float Score = 50;
+public class Emotion {
+	public static float Score = 50;
     public static float Change = 10;
     const float MAX = 100;
     const float MIN = 0;
-    public static void DetectEmotion(IntentEntity ie)
+
+	public static void SetEmotion(bool positive)
+	{
+		if (positive)
+		{
+			Score += Change;
+		}
+		else
+		{
+			Score -= Change;
+		}
+
+		SendEmotion();
+	}
+
+	public static void DetectEmotion(IntentEntity ie)
     {
         foreach (Entity e in ie.entitys)
         {
@@ -27,7 +42,7 @@ public class Emotion{
                 }
             }
         }
-		Debug.Log("Score: " + Score);
+		SendEmotion();
 	}
     public static float GetRandomScore()
     {
@@ -35,4 +50,12 @@ public class Emotion{
 		Debug.Log(Score + r * Change);
         return Score + r * Change;
     }
+
+	public static void SendEmotion()
+	{
+		JSONObject data = new JSONObject();
+		data.AddField("mood", Score);
+		data.AddField("power", 87);
+		MyWebSocket.Emit("status", data);
+	}
 }

@@ -48,11 +48,7 @@ public class MyWebSocket : MonoBehaviour {
 	}
 	private void OnOpen(object sender, EventArgs e)
 	{
-		Debug.Log("OPEN");
-		/*JSONObject jo = new JSONObject();
-		jo.AddField("type", "waiter");
-		jo.AddField("name", "Ball");
-		Emit("register", jo);*/
+		Debug.Log("Open");
 	}
 
 	public void Connect()

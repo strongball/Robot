@@ -44,35 +44,20 @@ public class MyWebSocket : MonoBehaviour {
 	public void OnDestroy()
 	{
 		if (socketThread != null) { socketThread.Abort(); }
-		connected = false;
 		ws.Close();
 	}
-	public void OnApplicationQuit()
-	{
-		ws.Close();
-	}
-
-
 	private void OnOpen(object sender, EventArgs e)
 	{
-		Debug.Log("OPEN");
-		/*JSONObject jo = new JSONObject();
-		jo.AddField("type", "waiter");
-		jo.AddField("name", "Ball");
-		Emit("register", jo);*/
+		Debug.Log("Open");
+		Emotion.SendEmotion();
 	}
 
 	public void Connect()
 	{
 		IP = url;
-		if(socketThread != null)
-		{
-			socketThread.Abort();
-		}
 		socketThread = new Thread(RunSocketThread);
 		socketThread.Start(ws);
 	}
-
 	private void RunSocketThread(object obj)
 	{
 		WebSocket webSocket = (WebSocket)obj;
@@ -108,7 +93,6 @@ public class MyWebSocket : MonoBehaviour {
 
 	public void OnMessage(object sender, MessageEventArgs e)
 	{
-		Debug.Log("rec");
 		JsonData data = JsonMapper.ToObject(e.Data);
 		foreach (SocketListener sl in eventListeners)
 		{

@@ -46,5 +46,6 @@ public class dropdown : MonoBehaviour
 	public void Close()
 	{
 		isOpen = false;
+		onClose.Invoke();
 	}
 }

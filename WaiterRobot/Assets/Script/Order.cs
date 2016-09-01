@@ -32,7 +32,7 @@ public class Order : MonoBehaviour {
 		JSONObject data = new JSONObject();
 		data.AddField("meal", meal.text);
 		MyWebSocket.Emit("order", data);
-		SpinBoard.SetActive(false);
+		gameObject.SetActive(false);
 	}
 
 	public void ReSpin()
@@ -40,7 +40,7 @@ public class Order : MonoBehaviour {
 		if(Emotion.Score >= TryAgain)
 		{
 			CheckPanel.SetActive(false);
-			Emotion.Score -= Emotion.Change;
+			Emotion.SetEmotion(false);
 			SpinWheel.GetComponent<SpinWheel>().StartGame(false);
 		}
 		else
@@ -68,7 +68,7 @@ public class Order : MonoBehaviour {
 			{
 				if (e.type == Entity.Choice_Confirm)
 				{
-					if (SpinBoard.activeInHierarchy)
+					if (CheckPanel.activeInHierarchy)
 					{
 						SendOrder(Title.GetComponent<Text>());
 					}

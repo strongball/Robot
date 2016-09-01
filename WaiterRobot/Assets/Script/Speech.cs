@@ -18,8 +18,14 @@ public class Speech : MonoBehaviour
 		AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
 		toText = activity.Call<AndroidJavaObject>("getToText");
+		Bluetooth.AddMessageListener((s) =>
+		{
+			if(s == "Start_Speech")
+			{
+				StartListen();
+			}
+		});
 #endif
-
 	}
 	void speechMessage(string s)
 	{

@@ -16,6 +16,7 @@ public class Bluetooth : MonoBehaviour
 {
 	static AndroidJavaObject bluetooth;
 	static Action<List<BluetoothDevice>> deviceListeners;
+	static Action<string> messageListener;
 
 	List<BluetoothDevice> devices;
 	BlueList blist;
@@ -56,6 +57,12 @@ public class Bluetooth : MonoBehaviour
 		}
 #endif
 	}
+	public static void AddMessageListener(Action<string> listener)
+	{
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+		messageListener+=listener;
+#endif
+	}
 	// Update is called once per frame
 	void Update () {
 		
@@ -63,6 +70,7 @@ public class Bluetooth : MonoBehaviour
 	void receiver(string s)
 	{
 		Toast.makeText(s, false);
+		messageListener(s);
 	}
 	void OnConnect(string s)
 	{
