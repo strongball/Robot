@@ -18,14 +18,10 @@ public class UIManager : MonoBehaviour {
 	void Update () {
         if (delayCounter > closeDelay)
         {
-			if (Input.GetKeyDown(KeyCode.Escape) && transform.childCount > 0)
+			if (Input.GetKeyDown(KeyCode.Escape)   && transform.childCount > 0)
 			{
 				delayCounter = 0;
-				Transform t = transform.GetChild(transform.childCount - 1);
-				if (t.gameObject.activeInHierarchy)
-				{
-					t.GetComponent<UIAdapter>().Open(false);
-				}
+				CloseLastUI();
 			}
         }
         else
@@ -43,7 +39,21 @@ public class UIManager : MonoBehaviour {
                 io.UI.GetComponent<UIAdapter>().Open(true);
             }
         }
+
+		if(ie.intent == Intent.Close)
+		{
+			CloseLastUI();
+		}
     }
+
+	public void CloseLastUI()
+	{
+		Transform t = transform.GetChild(transform.childCount - 1);
+		if (t.gameObject.activeInHierarchy)
+		{
+			t.GetComponent<UIAdapter>().Open(false);
+		}
+	}
 }
 [System.Serializable]
 public class IntentOpen

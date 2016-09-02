@@ -69,7 +69,9 @@ public class PhotoCamera : MonoBehaviour
 
 	void OnEnable()
     {
-        displaySite.mainTexture = back;
+		PreView.SetActive(false);
+		QRCodePanel.SetActive(false);
+		displaySite.mainTexture = back;
         back.Play();
     }
 
@@ -131,13 +133,15 @@ public class PhotoCamera : MonoBehaviour
 			Directory.CreateDirectory(path);
 		}
 		File.WriteAllBytes(path + filename, bytes);
-		Toast.makeText(filename, false);
+		Toast.makeText("上傳中"+filename, false);
+		TextToSpeech.Say("幫你上傳囉");
 		Debug.Log(path + filename);
 
 		if (AutoUpload)
 		{
 			MyWebSocket.SendBytes(bytes);
 		}
+		PreView.SetActive(false);
 	}
 
 	public void MakeQRCode(string s)
@@ -148,6 +152,7 @@ public class PhotoCamera : MonoBehaviour
 		encoded.Apply();//申請顯示圖片
 		QRCode.GetComponent<Image>().material.mainTexture = encoded;
 		QRCodePanel.SetActive(true);
+		TextToSpeech.Say("掃描可以下載");
 	}
 
 	private Color32[] useEncode(string textForEncoding, int width, int height)
@@ -176,15 +181,32 @@ public class PhotoCamera : MonoBehaviour
 
     public void Dialog(IntentEntity ie)
     {
-        if(ie.intent == Intent.Photo)
-        {
-            foreach(Entity e in ie.entitys)
-            {
-                if(e.type == Entity.Intention_Photo)
-                {
-                    TakePhoto();
-                }
-            }
-        }
+		if(ie.CheckIntentEntity(Intent.Photo, Entity.Intention_Photo))
+		{
+			TakePhoto();
+		}
+
+		if (PreView.activeInHierarchy)
+		{
+			if (ie.CheckIntentEntity(Intent.Choice, Entity.Choice_Confirm))
+			{
+				SavePhoto();
+			}else if(ie.CheckIntentEntity(Intent.Choice, Entity.Choice_Cancel))
+			{
+				PreView.SetActive(false);
+			}
+		}
+
+		if (QRCodePanel.activeInHierarchy)
+		{
+			if (ie.CheckIntentEntity(Intent.Choice, Entity.Choice_Confirm))
+			{
+				QRCodePanel.SetActive(false);
+			}
+			else if (ie.CheckIntentEntity(Intent.Choice, Entity.Choice_Cancel))
+			{
+				QRCodePanel.SetActive(false);
+			}
+		}
     }
 }

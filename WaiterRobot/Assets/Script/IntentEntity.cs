@@ -25,6 +25,19 @@ public class IntentEntity
         }
         return false;
     }
+
+	public bool CheckIntentEntity(string intent, string entity)
+	{
+		if (this.intent == intent && ContianEntity(entity))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
     public bool getNumber(out float value)
     {
         foreach(Entity e in entitys)
@@ -50,6 +63,7 @@ public class Intent
     public static string Game      = "遊戲對話";
     public static string Service   = "服務對話";
     public static string Choice    = "確認回應";
+	public static string Close	   = "關閉";
 }
 public enum IntentUnit
 {
