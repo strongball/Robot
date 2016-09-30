@@ -64,6 +64,7 @@ public class Intent
     public static string Service   = "服務對話";
     public static string Choice    = "確認回應";
 	public static string Close	   = "關閉";
+	public static string Move	   = "方向操作";
 }
 public enum IntentUnit
 {
@@ -79,7 +80,8 @@ public enum IntentUnit
 }
 public class Entity
 {
-    public static string Hello = "問候";
+	public static string None = "none";
+	public static string Hello = "問候";
     public static string Food = "食物";
 
     public static string Question = "疑問";
@@ -118,7 +120,13 @@ public class Entity
 
     public static string Choice_Confirm = "確認回應::肯定";
     public static string Choice_Cancel = "確認回應::否定";
-    Dictionary<string, float> Chinese_Number =
+
+	public static string Move_Forward = "方向操作::前進";
+	public static string Move_Backward = "方向操作::後退";
+	public static string Move_Left = "方向操作::左轉";
+	public static string Move_Right = "方向操作::右轉";
+
+	Dictionary<string, float> Chinese_Number =
     new Dictionary<string, float>()
     { { "一", 1 },
       { "二", 2 },
@@ -162,10 +170,6 @@ public class IntentManager
         Emotion.DetectEmotion(ie);
         ReadResponse.Response(ie);
         dialogListener(ie);
-        /*if(ie.getNumber(out number))
-        {
-            numberListener(Mathf.FloorToInt(number));
-        }*/
     }
     public static void addDialogListener(Action<IntentEntity> l)
     {

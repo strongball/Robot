@@ -38,13 +38,17 @@ public class Luisai : MonoBehaviour
 	{
 		string s = itemdata["intents"][0]["intent"].ToString();
         List<Entity> es = new List<Entity>();
-        
+
         for(int i = 0; i < itemdata["entities"].Count; i++)
         {
             var e = itemdata["entities"][i];
             es.Add(new Entity(e["type"].ToString(), e["entity"].ToString()));
         }
-        
+        if(itemdata["entities"].Count == 0)
+		{
+			es.Add(new Entity(Entity.None, Entity.None));
+		}
+
         IntentManager.HandleIntent(new IntentEntity(s, es));
 	}
     

@@ -42,7 +42,7 @@ public class ReadResponse : MonoBehaviour {
     {
         foreach(Entity e in ie.entitys)
         {
-            if (jsonData.Keys.Contains(ie.intent) && jsonData[ie.intent].Keys.Contains(e.type) && e.type !=  Entity.Number && e.type != Entity.Emotion_Angry && e.type != Entity.Emotion_Happy)
+            if (jsonData.Keys.Contains(ie.intent) && jsonData[ie.intent].Keys.Contains(e.type))
             {
                 JsonData arr = jsonData[ie.intent][e.type];
                 float randEmo = Emotion.GetRandomScore();
@@ -57,7 +57,6 @@ public class ReadResponse : MonoBehaviour {
                         best = i;
                     }
                 }
-                Debug.Log(arr[best]["content"]);
                 TextToSpeech.Say(arr[best]["content"].ToString());
 				if (arr[best].Keys.Contains("action")){
 					wantToDo = int.Parse(arr[best]["action"].ToString());

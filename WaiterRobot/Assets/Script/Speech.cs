@@ -39,10 +39,6 @@ public class Speech : MonoBehaviour
 		{
 			StartListen();
 		}
-		else if(s == "error7")
-		{
-			StartListen();
-		}
 	}
 	// Update is called once per frame
 	void Update()
