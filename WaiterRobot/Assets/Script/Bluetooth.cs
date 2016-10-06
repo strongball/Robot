@@ -63,6 +63,12 @@ public class Bluetooth : MonoBehaviour
 		messageListener+=listener;
 #endif
 	}
+	public static void RemoveMessageListener(Action<string> listener)
+	{
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+		messageListener-=listener;
+#endif
+	}
 	// Update is called once per frame
 	void Update () {
 		

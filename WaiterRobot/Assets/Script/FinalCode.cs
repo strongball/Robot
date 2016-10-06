@@ -33,13 +33,15 @@ public class FinalCode : MonoBehaviour
     void OnEnable()
     {
         IntentManager.addDialogListener(Dialog);
+		Bluetooth.AddMessageListener(BluetoothListener);
         initGame();
     }
 
     void OnDisable()
     {
         IntentManager.removeDialogListener(Dialog);
-    }
+		Bluetooth.RemoveMessageListener(BluetoothListener);
+	}
 
     public void initGame()
     {
@@ -81,7 +83,8 @@ public class FinalCode : MonoBehaviour
     }
     public void EndGame()
     {
-        TextToSpeech.Say("爆炸，掰掰");
+        TextToSpeech.Say("爆炸，你輸了");
+		Bluetooth.SendToDevice("punish");
 		gameObject.GetComponent<UIAdapter>().Open(false);
     }
 
@@ -106,4 +109,12 @@ public class FinalCode : MonoBehaviour
             }
         }
     }
+
+	public void BluetoothListener(string message)
+	{
+		if(message == "Game_Confirm" && gameObject.activeInHierarchy)
+		{
+			checkAnswer(true);
+		}
+	}
 }

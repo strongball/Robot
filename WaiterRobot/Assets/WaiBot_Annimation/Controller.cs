@@ -4,14 +4,12 @@ using System.Collections;
 public class Controller : MonoBehaviour {
 	public Animator Anim;
 	public AnimatorStateInfo BS;
+	static int Normal = Animator.StringToHash ("Base Layer.Normal");
 	static int Speak = Animator.StringToHash ("Base Layer.Speak");
 	static int NormaltoHappy = Animator.StringToHash ("Base Layer.Normal_to_Happy");
 	static int NormaltoAngry = Animator.StringToHash ("Base Layer.Normal_to_Angry");
 	static int NormaltoSad = Animator.StringToHash ("Base Layer.Normal_to_Sad");
 
-	static int HappytoNormal = Animator.StringToHash ("Base Layer.Happy_to_Normal");
-	static int AngrytoNormal = Animator.StringToHash ("Base Layer.Angry_to_Normal");
-	static int SadtoNormal = Animator.StringToHash ("Base Layer.Sad_to_Normal");
 	// Use this for initialization
 	void Start () {
 	
@@ -19,20 +17,13 @@ public class Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Anim.SetBool ("NormaltoAngry", false);
-		Anim.SetBool ("NormaltoHappy", false);
-		Anim.SetBool ("NormaltoSad", false);
-		Anim.SetBool ("HappytoNormal", false);
-		Anim.SetBool ("AngrytoNormal", false);
-		Anim.SetBool ("SadtoNormal", false);
-		Anim.SetBool ("NormaltoSpeak", false);
-		if (Input.GetKey (KeyCode.H)) 
+		/*if (Input.GetKey (KeyCode.H)) 
 		{
 			happy ();
 		}
 		if (Input.GetKey (KeyCode.N)) 
 		{
-			emotion_to_normal ();
+			normal ();
 		}
 
 		if (Input.GetKey (KeyCode.A)) 
@@ -48,30 +39,34 @@ public class Controller : MonoBehaviour {
 		if (Input.GetKey (KeyCode.T)) 
 		{
 			speak ();
-		}
-			
-
+		}*/
 	}
 
-	void angry(){
-		Anim.SetBool ("NormaltoAngry", true);
+	public void angry(){
+		Anim.SetTrigger ("toAngry");
 	}
 
-	void speak(){
-		Anim.SetBool ("NormaltoSpeak", true);
+	public void speak(float time){
+		StartCoroutine(speakThread(time));
 	}
 
-	void happy(){
-		Anim.SetBool ("NormaltoHappy", true);
+	IEnumerator speakThread(float time)
+	{
+		Anim.SetTrigger("toSpeak");
+		yield return new WaitForSecondsRealtime(time);
+		Anim.SetTrigger("toNormal");
 	}
 
-	void sad(){
-		Anim.SetBool ("NormaltoSad", true);
+	public void happy(){
+		Anim.SetTrigger ("toHappy");
 	}
 
-	void emotion_to_normal(){
-		Anim.SetBool ("HappytoNormal", true);
-		Anim.SetBool ("AngrytoNormal", true);
-		Anim.SetBool ("SadtoNormal", true);
+	public void sad(){
+		Anim.SetTrigger ("toSad");
 	}
+
+	public void normal(){
+		Anim.SetTrigger ("toNormal");
+	}
+		
 }
