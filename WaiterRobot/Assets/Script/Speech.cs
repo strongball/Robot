@@ -8,12 +8,16 @@ public class Speech : MonoBehaviour
 {
 	AndroidJavaObject toText;
 	public GameObject status;
+	public GameObject micPic;
 
+	public Sprite startListening;
+	public Sprite stopListening;
 	static Action<string> listeners;
 	// Use this for initialization
 	void Start()
 	{
 		//listeners = new List<Action<string>>();
+		micPic.GetComponent<Image>().sprite = stopListening;
 #if (UNITY_ANDROID && !UNITY_EDITOR)
 		AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 		AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
@@ -35,6 +39,16 @@ public class Speech : MonoBehaviour
 	void statusListener(string s)
 	{
 		status.GetComponent<Text>().text = s;
+
+		if(s == "Ready" || s == "Start")
+		{
+			micPic.GetComponent<Image>().sprite = startListening;
+		}
+		else
+		{
+			micPic.GetComponent<Image>().sprite = stopListening;
+		}
+
 		if (s == "Result")
 		{
 			StartListen();
