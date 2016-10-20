@@ -9,6 +9,8 @@ double angle_rad = PI/180.0;
 double angle_deg = 180.0/PI;
 MeDCMotor leftWheel(9);
 MeDCMotor rightWheel(10);
+
+MeLimitSwitch sw_1_2(1,2);
 int leftSpeed = 0;
 int rightSpeed = 0;
 
@@ -25,10 +27,10 @@ void setup(){
 
 void loop(){
     readString="";
-    if((0^(analogRead(A7)>10?0:1))){
+    if(sw_1_2.touched()){
           if(press ==0){
                buzzer.tone(262, 500);
-               myBlueTooth.write("hello");
+               myBlueTooth.write("onhit");
                press = 1;
           }
      }else{

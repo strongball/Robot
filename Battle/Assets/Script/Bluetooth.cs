@@ -18,6 +18,7 @@ public class Bluetooth : MonoBehaviour
 	static AndroidJavaObject bluetooth;
 	static Action<List<BluetoothDevice>> deviceListeners;
     static public bool IsConnect = false;
+    static Action<string> messageListener;
 
     public UnityEvent onConnect;
 	List<BluetoothDevice> devices;
@@ -73,8 +74,9 @@ public class Bluetooth : MonoBehaviour
 	}
 	void receiver(string s)
 	{
-		Toast.makeText(s, false);
-	}
+		//Toast.makeText(s, false);
+        messageListener(s);
+    }
 	void OnConnect(string s)
 	{
 		Toast.makeText("connect: "+s, false);
@@ -108,4 +110,17 @@ public class Bluetooth : MonoBehaviour
 #endif
 		deviceListeners(devices);
 	}
+
+    public static void AddMessageListener(Action<string> listener)
+    {
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+		messageListener+=listener;
+#endif
+    }
+    public static void RemoveMessageListener(Action<string> listener)
+    {
+#if (UNITY_ANDROID && !UNITY_EDITOR)
+		messageListener-=listener;
+#endif
+    }
 }

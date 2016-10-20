@@ -30,6 +30,8 @@ public class Battlemanager : MonoBehaviour {
         p2Ctrl = PlayerCtrl2.GetComponent<Player>();
         MyWebSocket.On("UpdataHPMP", HPMPHandler);
         MyWebSocket.On("EndGame", EndGame);
+
+        Bluetooth.AddMessageListener(blueDialog);
     }
 	
 	// Update is called once per frame
@@ -41,6 +43,14 @@ public class Battlemanager : MonoBehaviour {
             GamePad.SetActive(false);
         }
 	}
+
+    public void blueDialog(string s)
+    {
+        if (s == "onhit")
+        {
+            GetDamage();
+        }
+    }
 
     public void StartGame(string name)
     {
@@ -76,7 +86,7 @@ public class Battlemanager : MonoBehaviour {
             JSONObject data = new JSONObject();
             data.AddField("name", PowerUp.Name);
             data.AddField("MP", PowerUp.Cost);
-            data.AddField("skillTime", PowerUp.SkillTime);
+            data.AddField("skillTime", PowerUp.SkillTime*1000);
             data.AddField("powerValue", PowerUp.PowerValue);
             MyWebSocket.Emit("UseSkill", data);
         }
@@ -107,10 +117,11 @@ public class Battlemanager : MonoBehaviour {
     {
         /*Debug.Log("hd:" + float.Parse(jd["p1"]["HP"].ToString()));
         Debug.Log(float.Parse(jd["p2"]["HP"].ToString()));*/
-        p1Ctrl.SetCurrentHP(int.Parse(jd["p1"]["HP"].ToString()));
-        p1Ctrl.SetCurrentMP(int.Parse(jd["p1"]["MP"].ToString()));
-        p2Ctrl.SetCurrentHP(int.Parse(jd["p2"]["HP"].ToString()));
-        p2Ctrl.SetCurrentMP(int.Parse(jd["p2"]["MP"].ToString()));
+        Debug.Log("rec");
+        p1Ctrl.SetCurrentHP(float.Parse(jd["p1"]["HP"].ToString()));
+        p1Ctrl.SetCurrentMP(float.Parse(jd["p1"]["MP"].ToString()));
+        p2Ctrl.SetCurrentHP(float.Parse(jd["p2"]["HP"].ToString()));
+        p2Ctrl.SetCurrentMP(float.Parse(jd["p2"]["MP"].ToString()));
     }
 }
 [Serializable]

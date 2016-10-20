@@ -36,6 +36,12 @@ public class RobotControler : MonoBehaviour {
         }
     }
 
+    public void OnDisable()
+    {
+        leftSpeed = 0;
+        rightSpeed = 0;
+    }
+
     public void SpeedUp(float speedUpRatio, float skillTime)
     {
         power *= speedUpRatio;

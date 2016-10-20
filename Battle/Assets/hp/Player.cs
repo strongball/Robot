@@ -34,7 +34,7 @@ public class Player : MonoBehaviour {
 
     public bool IsEnergyEnough(float cost)
     {
-        if(energy.CurrentValue > cost)
+        if(energy.CurrentValue >= cost)
         {
             return true;
         }
