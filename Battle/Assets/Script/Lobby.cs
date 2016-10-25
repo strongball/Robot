@@ -5,23 +5,20 @@ using LitJson;
 public class Lobby : MonoBehaviour {
     public GameObject bluetooth;
     public GameObject BattleManager;
-    BlueList bl;
 
     bool isPair;
     string playerNumber;
 	// Use this for initialization
 	void Start () {
-        bl = bluetooth.GetComponent<BlueList>();
         isPair = false;
         MyWebSocket.On("OnPair", OnPair);
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (!bl.IsOpen() && !Bluetooth.IsConnect)
+        if (Bluetooth.IsConnect)
         {
-            Debug.Log("op");
-            bl.OpenView();
+
         }
         if (isPair)
         {

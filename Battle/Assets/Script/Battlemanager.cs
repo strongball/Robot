@@ -55,8 +55,8 @@ public class Battlemanager : MonoBehaviour {
     public void StartGame(string name)
     {
         playerName = name;
-
-        if(playerName == "p1")
+		Toast.makeText("You are " + playerName, false);
+		if (playerName == "p1")
         {
             ownPlayer = p1Ctrl;
         }
@@ -110,14 +110,12 @@ public class Battlemanager : MonoBehaviour {
     public void EndGame(JsonData jd)
     {
         Debug.Log("winner is:" + jd.ToString());
-        isEnd = true;
+		Toast.makeText("Winner is:" + jd.ToString(), false);
+		isEnd = true;
     }
 
     public void HPMPHandler(JsonData jd)
     {
-        /*Debug.Log("hd:" + float.Parse(jd["p1"]["HP"].ToString()));
-        Debug.Log(float.Parse(jd["p2"]["HP"].ToString()));*/
-        Debug.Log("rec");
         p1Ctrl.SetCurrentHP(float.Parse(jd["p1"]["HP"].ToString()));
         p1Ctrl.SetCurrentMP(float.Parse(jd["p1"]["MP"].ToString()));
         p2Ctrl.SetCurrentHP(float.Parse(jd["p2"]["HP"].ToString()));
