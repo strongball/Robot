@@ -54,7 +54,7 @@ public class Controller : MonoBehaviour {
 	{
 		Anim.SetTrigger("toSpeak");
 		yield return new WaitForSecondsRealtime(time);
-		Anim.SetTrigger("toNormal");
+		emotionFace();
 	}
 
 	public void happy(){
@@ -68,5 +68,23 @@ public class Controller : MonoBehaviour {
 	public void normal(){
 		Anim.SetTrigger ("toNormal");
 	}
-		
+	
+	public void emotionFace()
+	{
+		if(Emotion.Score > 70)
+		{
+			happy();
+		}
+		else if(Emotion.Score > 40){
+			normal();
+		}
+		else if(Emotion.Score > 20)
+		{
+			sad();
+		}
+		else
+		{
+			angry();
+		}
+	}
 }

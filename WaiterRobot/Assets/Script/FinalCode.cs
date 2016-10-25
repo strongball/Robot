@@ -48,7 +48,8 @@ public class FinalCode : MonoBehaviour
         min = 0;
         max = 99;
         bomb = Mathf.FloorToInt(Random.Range(0f, 99f));
-    }
+		TextToSpeech.Say("請說出零到一百其中一個數字");
+	}
 
     public void guess(int number)
     {
