@@ -50,6 +50,15 @@ public class TableOrder : MonoBehaviour {
 				{
 					Destroy(edit.gameObject);
 				});
+				edit.FindChild("status/cooking").GetComponent<Button>().onClick.AddListener(() =>
+				{
+					JSONObject data = new JSONObject();
+					data.AddField("waiterId", wact.id);
+					data.AddField("mealId", meal.id);
+					data.AddField("status", "cooking");
+					MyWebSocket.Emit("OrderChange", data);
+					Destroy(edit.gameObject);
+				});
 
 				edit.FindChild("status/finish").GetComponent<Button>().onClick.AddListener(() =>
 				{

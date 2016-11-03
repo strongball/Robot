@@ -80,10 +80,7 @@ public class ReceiveWaiters : MonoBehaviour {
 				edit.SetParent(Display.transform, false);
 				edit.gameObject.name = WaiterAddName + wa.id;
 			}
-			edit.GetComponent<WaiterCtrl>().SetTable(wa.table);
-			edit.GetComponent<WaiterCtrl>().SetPower(wa.power + "%");
-			edit.GetComponent<WaiterCtrl>().SetEmotion(wa.mood);
-			
+			edit.GetComponent<WaiterCtrl>().SetData(wa);
 
 			//setorder
 			Transform order = OrderDisplay.transform.FindChild(OrderAddName + wa.id);
@@ -144,6 +141,8 @@ public class WaiterAction
 	}
 	public int mood;
 	public int power;
+	public bool service;
+
 	public List<Meal> meals;
 
 	public WaiterAction(JsonData jd)
@@ -153,9 +152,9 @@ public class WaiterAction
 		this.table = jd["table"].ToString();
 		this.mood = int.Parse(jd["mood"].ToString());
 		this.power = int.Parse(jd["power"].ToString());
-
-
+		this.service = bool.Parse(jd["service"].ToString());
 		this.meals = new List<Meal>();
+
 		for(int i = 0; i < jd["orderList"].Count; i++)
 		{
 			this.meals.Add(new Meal(jd["orderList"][i]));

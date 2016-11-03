@@ -110,7 +110,7 @@ public class Battlemanager : MonoBehaviour {
     public void EndGame(JsonData jd)
     {
         Debug.Log("winner is:" + jd.ToString());
-		Toast.makeText("Winner is:" + jd.ToString(), false);
+		//Toast.makeText("Winner is:", false);
 		isEnd = true;
     }
 

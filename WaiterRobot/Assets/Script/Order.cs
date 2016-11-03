@@ -27,6 +27,12 @@ public class Order : MonoBehaviour {
 		Title.GetComponent<Text>().text = meal;
 	}
 
+	public void CallService()
+	{
+		JSONObject data = new JSONObject();
+		MyWebSocket.Emit("Service", data);
+	}
+
 	public void SendOrder(Text meal)
 	{
 		JSONObject data = new JSONObject();

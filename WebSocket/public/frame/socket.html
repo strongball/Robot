@@ -1,0 +1,49 @@
+<html>
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <script>
+
+		$(function(){
+
+			var wsServer = 'ws://127.0.0.1';
+			var websocket = new WebSocket("ws://localhost:8001/","waiterrobot");
+			websocket.binaryType = "arraybuffer";
+			console.log(websocket);
+			var str = JSON.stringify({
+				'username': "name",
+				'company': "com",
+			});
+			websocket.onopen = function (e) {
+				console.log("XDD");
+					//websocket.send(str);
+			}
+			$('#bt1').click(function(){
+				
+			})
+			document.getElementById('picsUploader').addEventListener('change', function(e){
+				var reader = new FileReader();
+				reader.onload = function(event) {
+						var content = event.target.result;
+						websocket.send("content");
+				};
+				// console.log(file);
+				reader.readAsArrayBuffer(e.target.files[0]);
+			}, false);
+			
+		});
+    </script>
+    <div id = "date">This is our socket.html file</div>
+    <textarea id="text"></textarea>
+    <button id = 'bt1'>按我啊</button>
+
+	<form action='/test' method='post'> 
+		<input type='text' name='name' value='fred'> 
+		<input type='text' name='tel' value='0926xxx572'> 
+		<input id = "picsUploader" type='file' name='f'>
+		<input type='submit' value='Submit'> 
+	</form>
+  </body>
+</html>

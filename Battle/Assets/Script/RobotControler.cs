@@ -15,8 +15,8 @@ public class RobotControler : MonoBehaviour {
     int turn;
 	// Use this for initialization
 	void Start () {
-        currectSpeed = 0;
-        StartCoroutine(FixSendCommand());
+    
+        
     }
 	
 	// Update is called once per frame
@@ -35,12 +35,16 @@ public class RobotControler : MonoBehaviour {
             display.GetComponent<Text>().text = currectSpeed.ToString();
         }
     }
-
+	public void OnEnable()
+	{
+		currectSpeed = 0;
+		StartCoroutine(FixSendCommand());
+	}
     public void OnDisable()
     {
-        leftSpeed = 0;
-        rightSpeed = 0;
-    }
+		Bluetooth.SendCommand("wheel", 0.ToString() + " " + 0.ToString());
+		Debug.Log("end");
+	}
 
     public void SpeedUp(float speedUpRatio, float skillTime)
     {

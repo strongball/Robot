@@ -6,20 +6,40 @@ public class WaiterCtrl : MonoBehaviour {
 	public GameObject Table;
 	public GameObject Power;
 	public GameObject Emotion;
-	
+	public GameObject Bell;
 
-	public void SetTable(string s)
+	public Sprite RedBell;
+	public Sprite GreenBell;
+	string id;
+	bool service;
+
+	void Update()
 	{
-		Table.GetComponent<Text>().text = s;
+		if (service)
+		{
+			Bell.GetComponent<Image>().sprite = RedBell;
+		}
+		else
+		{
+			Bell.GetComponent<Image>().sprite = GreenBell;
+		}
 	}
 
-	public void SetEmotion(int s)
+	public void SetData(WaiterAction wa)
 	{
-		Emotion.GetComponent<Text>().text = s.ToString();
+		Table.GetComponent<Text>().text = wa.table;
+		Emotion.GetComponent<Text>().text = wa.mood.ToString();
+		Power.GetComponent<Text>().text = wa.power + "%";
+		id = wa.id;
+		service = wa.service;
 	}
-
-	public void SetPower(string s)
+	public void DoneService()
 	{
-		Power.GetComponent<Text>().text = s;
+		if (service)
+		{
+			JSONObject data = new JSONObject();
+			data.AddField("id", id);
+			MyWebSocket.Emit("ReceiveService", data);
+		}
 	}
 }
