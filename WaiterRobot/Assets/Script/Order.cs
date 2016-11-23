@@ -45,6 +45,7 @@ public class Order : MonoBehaviour {
 	{
 		if(Emotion.Score >= TryAgain)
 		{
+			TextToSpeech.Say("給你重來一次");
 			CheckPanel.SetActive(false);
 			Emotion.SetEmotion(false);
 			SpinWheel.GetComponent<SpinWheel>().StartGame(false);
@@ -57,6 +58,7 @@ public class Order : MonoBehaviour {
 
 	void OnEnable()
 	{
+		TextToSpeech.Say("我們這裡是轉到什麼吃什麼");
 		SpinBoard.SetActive(true);
 	}
 

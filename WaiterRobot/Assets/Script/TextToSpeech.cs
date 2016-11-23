@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class TextToSpeech : MonoBehaviour {
 	public GameObject face;
+	public GameObject speech;
 	AndroidJavaObject activity;
 
 	static AndroidJavaObject toSpeech;
@@ -21,6 +23,7 @@ public class TextToSpeech : MonoBehaviour {
 		if(speakTime > 0)
 		{
 			face.GetComponent<Controller>().speak(speakTime);
+			speech.GetComponent<Speech>().TimeRestart(speakTime);
 			speakTime = 0;
 		}
 	}
@@ -30,8 +33,7 @@ public class TextToSpeech : MonoBehaviour {
 			toSpeech.Call ("say", s);
 		}
 #endif
-		speakTime = s.Length / 3;
+		speakTime = s.Length / 4;
 		Debug.Log("Say: " + s);
-
 	}
 }
